@@ -1,35 +1,80 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import firebase, { User } from 'firebase';
+import { useHistory } from 'react-router-dom';
+import { useUser } from 'reactfire';
 
 import { Layout } from '../components/Layout';
 
 export default (): JSX.Element => {
   const [counter, setCounter] = useState(0);
+  const [docID, setDocID] = useState('');
 
-  const handleCount = (operation: string): void => {
+  const history = useHistory();
+  const user: User = useUser();
+  const db = firebase.firestore();
+
+  useEffect(() => {
+    const getCountUser = async () => {
+      try {
+        const users = await db.collection('users').get();
+        users.forEach(userDoc => {
+          const userDocId = userDoc.data().id;
+          if (userDocId === user.uid) {
+            const countUser = userDoc.data().counter;
+            setDocID(userDoc.id);
+            setCounter(countUser);
+          }
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    getCountUser();
+  }, []);
+
+  const handleCount = async (operation: string): Promise<void> => {
     if (operation.includes('Add')) {
       if (counter <= 100) {
-        setCounter(counter + 1);
+        const counterNew = counter + 1;
+        setCounter(counterNew);
+        const refUser = db.collection('users').doc(docID);
+        await refUser.update({ counter: counterNew });
       }
     } else {
       if (counter > 0) {
+        const counterNew = counter - 1;
         setCounter(counter - 1);
+        const refUser = db.collection('users').doc(docID);
+        await refUser.update({ counter: counterNew });
       }
+    }
+  };
+
+  const handleLogout = async (): Promise<void> => {
+    try {
+      await firebase.auth().signOut();
+      history.push('/');
+    } catch (e) {
+      console.log(e);
     }
   };
 
   return (
     <Layout>
-      <Title>Usuario: Santiago</Title>
+      {user && <Title>Usuario: {user.email}</Title>}
       <ButtonCounter onClick={() => handleCount('Add')}>+</ButtonCounter>
       <Count>{counter}</Count>
       <ButtonCounter onClick={() => handleCount('Subtract')}>-</ButtonCounter>
+      <BtnLogOut onClick={handleLogout}>Cerrar Sesión</BtnLogOut>
     </Layout>
   );
 };
 
 const Title = styled.h1`
-  padding-bottom: 50px;
+  padding-bottom: 30px;
+  font-size: 1.7em;
+  text-align: center;
 `;
 
 const ButtonCounter = styled.button`
@@ -45,4 +90,13 @@ const Count = styled.h2`
   font-size: 2em;
   color: #000;
   padding: 15px 0;
+`;
+
+const BtnLogOut = styled.button`
+  background-color: #fc3d5d;
+  color: #fff;
+  border: none;
+  margin-top: 60px;
+  padding: 15px 45px;
+  border-radius: 10px;
 `;

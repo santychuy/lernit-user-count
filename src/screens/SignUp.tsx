@@ -1,6 +1,7 @@
 import React, { useState, ChangeEvent } from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
+import firebase from 'firebase';
 
 import { Layout } from '../components/Layout';
 import { Input } from '../components/common/Input';
@@ -18,7 +19,6 @@ export default (): JSX.Element => {
     email: '',
     password: '',
   });
-
   const history = useHistory();
 
   const handlerChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -28,12 +28,28 @@ export default (): JSX.Element => {
     setInputUser(prevState => ({ ...prevState, [name]: value }));
   };
 
-  const handleRegister = (): void => {
+  const handleRegister = async (): Promise<void> => {
     if (email === '' && password === '' && confirm === '')
       return alert('Llenar campos requeridos');
     if (!validateEmail(email)) return alert('Escribir e-mail válido');
     if (password !== confirm) return alert('Contraseñas no coinciden');
-    history.push('/');
+    if (password.length < 6) return alert('Contraseña debe ser más segura');
+
+    try {
+      const userCreated = await firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, password);
+      const userID = userCreated.user?.uid;
+      var db = firebase.firestore();
+      await db.collection('users').add({
+        id: userID,
+        counter: 0,
+      });
+
+      history.push('/');
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
@@ -100,4 +116,6 @@ const BtnLogin = styled.button`
   width: 100%;
   text-align: center;
   text-decoration: underline;
+  border: none;
+  background-color: white;
 `;

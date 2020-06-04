@@ -1,6 +1,7 @@
 import React, { useState, ChangeEvent } from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
+import firebase from 'firebase';
 
 import { Layout } from '../components/Layout';
 import { Input } from '../components/common/Input';
@@ -25,10 +26,16 @@ export default (): JSX.Element => {
     setUserInput(prevState => ({ ...prevState, [name]: value }));
   };
 
-  const handleLogin = (): void => {
+  const handleLogin = async (): Promise<void> => {
     if (email === '' && password === '') return alert('Llenar campos requeridos');
     if (!validateEmail(email)) return alert('Escribir e-mail válido');
-    history.push('/counter');
+
+    try {
+      firebase.auth().signInWithEmailAndPassword(email, password);
+      history.push('/counter');
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
@@ -74,7 +81,7 @@ const BodyLogin = styled.div`
 
 const FormTitle = styled.h2`
   font-size: 1.4em;
-  padding-bottom: 40px;
+  padding-bottom: 20px;
 `;
 
 const BtnLogin = styled.button`
@@ -90,4 +97,6 @@ const BtnSignUp = styled.button`
   width: 100%;
   text-align: center;
   text-decoration: underline;
+  border: none;
+  background-color: white;
 `;
