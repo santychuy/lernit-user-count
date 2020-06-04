@@ -50,13 +50,13 @@ Para instalar localmente el proyecto, se seguirá estos pasos:
 ## Instalar dependencias
 
 ```properties
-    yarn install
+    yarn
 ```
 
 o si estas usando **npm**:
 
 ```properties
-    npm install
+    npm i
 ```
 
 <br>
