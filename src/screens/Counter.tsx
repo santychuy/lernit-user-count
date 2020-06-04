@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import firebase, { User } from 'firebase';
@@ -32,7 +33,7 @@ export default (): JSX.Element => {
       }
     };
     getCountUser();
-  }, []);
+  }, [user]);
 
   const handleCount = async (operation: string): Promise<void> => {
     if (operation.includes('Add')) {
