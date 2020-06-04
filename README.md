@@ -17,7 +17,7 @@
 
 # Ejemplo
 
-[💻 Ejemplo a proyecto](https://lernitexample.netlify.app/).
+[💻 Ejemplo proyecto](https://lernitexample.netlify.app/).
 
 <br>
 
