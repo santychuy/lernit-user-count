@@ -17,7 +17,7 @@
 
 # Ejemplo
 
-[💻 Ejemplo a proyecto](https://www.notion.so/Entrevista-Ejercicio-b69662be972f4dda800f4c60d4da5cc3).
+[💻 Ejemplo a proyecto](https://lernitexample.netlify.app/).
 
 <br>
 
