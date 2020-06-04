@@ -25,4 +25,5 @@ const InputText = styled.input`
   color: #000;
   border: none;
   height: 30px;
+  width: 100%;
 `;
