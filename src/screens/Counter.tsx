@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom';
 import { useUser } from 'reactfire';
 
 import { Layout } from '../components/Layout';
+import { ButtonLogOut } from '../components/Counter/ButtonLogOut';
 
 export default (): JSX.Element => {
   const [counter, setCounter] = useState(0);
@@ -51,22 +52,22 @@ export default (): JSX.Element => {
     }
   };
 
-  const handleLogout = async (): Promise<void> => {
-    try {
-      await firebase.auth().signOut();
-      history.push('/');
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
   return (
     <Layout>
-      {user && <Title>Usuario: {user.email}</Title>}
-      <ButtonCounter onClick={() => handleCount('Add')}>+</ButtonCounter>
-      <Count>{counter}</Count>
-      <ButtonCounter onClick={() => handleCount('Subtract')}>-</ButtonCounter>
-      <BtnLogOut onClick={handleLogout}>Cerrar Sesión</BtnLogOut>
+      {user ? (
+        <>
+          <Title>Usuario: {user.email}</Title>
+          <ButtonCounter onClick={() => handleCount('Add')}>+</ButtonCounter>
+          <Count>{counter}</Count>
+          <ButtonCounter onClick={() => handleCount('Subtract')}>-</ButtonCounter>
+          <ButtonLogOut />
+        </>
+      ) : (
+        <>
+          <Title>¿Qué haces? Inicia sesion</Title>
+          <ButtonHome onClick={() => history.push('/')}>Ir a inicio</ButtonHome>
+        </>
+      )}
     </Layout>
   );
 };
@@ -75,6 +76,9 @@ const Title = styled.h1`
   padding-bottom: 30px;
   font-size: 1.7em;
   text-align: center;
+  @media (min-width: 1200px) {
+    font-size: 2.2em;
+  }
 `;
 
 const ButtonCounter = styled.button`
@@ -92,11 +96,8 @@ const Count = styled.h2`
   padding: 15px 0;
 `;
 
-const BtnLogOut = styled.button`
-  background-color: #fc3d5d;
-  color: #fff;
+const ButtonHome = styled.button`
   border: none;
-  margin-top: 60px;
-  padding: 15px 45px;
-  border-radius: 10px;
+  background-color: #f4f4f1;
+  color: #000;
 `;

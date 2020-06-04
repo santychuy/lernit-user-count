@@ -15,4 +15,7 @@ export default (): JSX.Element => {
 
 const Title = styled.h1`
   padding-bottom: 20px;
+  @media (min-width: 1200px) {
+    font-size: 3em;
+  }
 `;

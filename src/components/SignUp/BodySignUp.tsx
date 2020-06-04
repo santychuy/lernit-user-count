@@ -63,11 +63,19 @@ const BodyLogin = styled.div`
   border-radius: 25px;
   box-shadow: 2px 2px 4px 0px rgba(0, 0, 0 0.55);
   padding: 10px 35px;
+  @media (min-width: 1200px) {
+    height: 500px;
+    width: 500px;
+  }
 `;
 
 const FormTitle = styled.h2`
   font-size: 1.4em;
   padding-bottom: 20px;
+  @media (min-width: 1200px) {
+    font-size: 2em;
+    padding-bottom: 10px;
+  }
 `;
 
 const BtnLogin = styled.button`

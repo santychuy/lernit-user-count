@@ -35,4 +35,7 @@ const BtnLogin = styled.button`
   width: 100%;
   margin-top: 70px;
   margin-bottom: 10px;
+  @media (min-width: 1200px) {
+    margin-top: 90px;
+  }
 `;

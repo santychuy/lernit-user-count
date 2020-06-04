@@ -11,4 +11,8 @@ export const GlobalStyle = createGlobalStyle`
       font-size: 35px;
       color: #75baff;
   }
+
+  button {
+    cursor: pointer;
+  }
 `;

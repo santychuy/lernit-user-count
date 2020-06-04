@@ -45,4 +45,7 @@ const BtnSignUp = styled.button`
   width: 100%;
   margin-top: 30px;
   margin-bottom: 10px;
+  @media (min-width: 1200px) {
+    margin-top: 50px;
+  }
 `;
